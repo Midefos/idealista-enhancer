@@ -1,0 +1,24 @@
+{
+  "type": "module",
+  "scripts": {
+    "bundle": "node bundler.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Midefos/idealista-enhancer.git"
+  },
+  "author": "Midefos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Midefos/idealista-enhancer/issues"
+  },
+  "homepage": "https://github.com/Midefos/idealista-enhancer#readme",
+  "devDependencies": {
+    "@babel/core": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "browserify-banner": "^2.0.4",
+    "jquery": "^3.6.0"
+  }
+}
