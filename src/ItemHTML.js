@@ -1,11 +1,15 @@
-import Configuration from "./Configuration.js";
+import Preferences from "./Preferences.js";
 
 export default class ItemHTML {
 
+    static CONTAINER_CLASS_NAME = 'midefos-idealista-container';
+    static get CONTAINER_SELECTOR() {
+        return `.${this.CONTAINER_CLASS_NAME}`;
+    }
 
     static createInformation(item) {
         return `
-        <div class='midefos-idealista-container'>
+        <div class='${this.CONTAINER_CLASS_NAME}'>
             ${this._createPercentagePriceHTML(item)}
             ${this._createPriceHTML(item)}
             ${this._createPriceMeterHTML(item)}
@@ -15,7 +19,7 @@ export default class ItemHTML {
     }
     
     static _createPercentagePriceHTML(item) {
-        if (!Configuration.get('percentages')) return ``;
+        if (!Preferences.get('percentages')) return ``;
     
         const twentyPercent = Math.round(item.price * 20 / 100);
         const thirtyPercent = Math.round(item.price * 30 / 100);
@@ -28,20 +32,20 @@ export default class ItemHTML {
     
     
     static _createPriceHTML(item) {
-        const desiredPrice = Configuration.get('max-price');
+        const desiredPrice = Preferences.get('max-price');
         const desiredTwentyFivePercentMore = Math.round(desiredPrice * 1.25);
     
         if (item.price <= desiredPrice) {
-            return `<span class='success'><strong>✓</strong> Precio</span>`;
+            return this._createSuccess('Precio');
         } else if (item.price <= desiredTwentyFivePercentMore) {
-            return `<span class='warning'><strong>✓</strong> Precio</span>`;
+            return this._createWarning('Precio');
         }
-        return `<span class='error'><strong>X</strong> Precio</span>`;
+        return this._createError('Precio');
     }
     
     
     static _createPriceMeterHTML(item) {
-        const desiredPricePerMeter = Configuration.get('max-price-per-meter');
+        const desiredPricePerMeter = Preferences.get('max-price-per-meter');
         const desiredTwentyFivePercentMore = Math.round(desiredPricePerMeter * 1.25);
     
         if (item.priceMeter <= desiredPricePerMeter) {
@@ -53,31 +57,48 @@ export default class ItemHTML {
     }
     
     static _createLiftHTML(item) {
-        if (!Configuration.get('lift')) return ``;
+        if (!Preferences.get('lift')) return ``;
     
         if (!item.additionalInfo) {
             if (item.isFlat()) return ``;
-            return this.__createIndividual('?', 'Ascensor', 'warning');
+            return this._createMissing('Ascensor');
         }
     
         if (item.hasLift) {
-            return this.__createIndividual('✓', 'Ascensor', 'warning');
+            return this._createSuccess('Ascensor',);
         }
-        return this.__createIndividual('X', 'Ascensor', 'error');
+        return this._createError('Ascensor');
     }
     
     static _createInteriorHTML(item) {
-        if (!Configuration.get('exterior')) return ``;
+        if (!Preferences.get('exterior')) return ``;
     
         if (!item.additionalInfo) {
             if (!item.isFlat()) return ``;
-            return `<span class='warning'><strong>?</strong> Exterior</span>`
+            return this._createMissing('Exterior');
         }
     
         if (item.isExterior) {
-            return `<span class='success'><strong>✓</strong> Exterior</span>`
+            return this._createSuccess('Exterior');
         }
-        return `<span class='error'><strong>X</strong> Exterior</span>`;
+        return this._createError('Exterior');
+    }
+
+    static _createSuccess(infoText) {
+        return this.__createIndividual('✓', infoText, 'success');
+    }
+
+
+    static _createWarning(infoText) {
+        return this.__createIndividual('✓', infoText, 'warning');
+    }
+
+    static _createMissing(infoText) {
+        return this.__createIndividual('?', infoText, 'warning');
+    }
+
+    static _createError(infoText) {
+        return this.__createIndividual('✓', infoText, 'error');
     }
 
     static __createIndividual(strongText, infoText, className = '') {

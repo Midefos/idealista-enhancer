@@ -1,44 +1,46 @@
+import ConfigurationHTML from "./ConfigurationHTML.js";
+import Event from "./Event.js";
+import Information from "./Information.js";
+import Log from "./Log.js";
+import Preferences from "./Preferences.js";
+
 export default class Configuration {
 
-    static NAME = 'midefos-idealista';
-
-    static _current;
-
-    static init() {
-        this._current = this._getConfig();
+    constructor() {
+        document.querySelector('#main-header').innerHTML += ConfigurationHTML.create();
+        
+        this._initEvents();
     }
 
-    static get(key) {
-        const config = this._getConfig();
-        return config[key];
+    _initEvents() {
+        Event.click(ConfigurationHTML.SAVE_CONFIG_SELECTOR, () => {
+            Preferences.save(this._extractConfiguration());
+            Information.create();
+            Configuration.toggle();
+        });
     }
 
-    static save(config) {
-        window.localStorage.setItem(this.NAME, JSON.stringify(config));
-        this._current = config;
-    }
-
-    static _getConfig() {
-        const storageConfig = this._getFromLocalStorage();
-        if (!storageConfig) return this._default();
-        return storageConfig;
-    }
-
-    static _getFromLocalStorage() {
-        const storageConfig = window.localStorage.getItem(this.NAME);
-        if (!storageConfig) return null;
-        return JSON.parse(storageConfig);
-    }
-
-    static _default() {
+    _extractConfiguration() {
+        const container = document.querySelector(ConfigurationHTML.CONTAINER_SELECTOR);
         return {
-            enabled: true,
-            percentages: true,
-            garage: false,
-            exterior: true,
-            lift: true,
-            'max-price': 120_000,
-            'max-price-per-meter': 1_500
+            enabled: container.querySelector('#enabled').checked,
+            percentages: container.querySelector('#percentages').checked,
+            garage: container.querySelector('#garage').checked,
+            exterior: container.querySelector('#exterior').checked,
+            lift: container.querySelector('#lift').checked,
+            'max-price': container.querySelector('#max-price').value,
+            'max-price-per-meter': container.querySelector('#max-price-per-meter').value
+        }
+    }
+
+    static toggle() {
+        const container = document.querySelector(ConfigurationHTML.CONTAINER_SELECTOR);
+        if (getComputedStyle(container).display === 'none') {
+            container.style.display = 'block';
+            Log.debug(`Opened configuration`);
+        } else {
+            container.style.display = 'none';
+            Log.debug(`Closed configuration`);
         }
     }
 
