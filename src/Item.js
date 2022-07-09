@@ -1,3 +1,5 @@
+import ItemHTML from './ItemHTML.js';
+
 export default class Item {
 
     static NAME_SELECTOR = '.item-link';
@@ -13,10 +15,46 @@ export default class Item {
         this.price = this._extractPrice();
         this.meters = this._extractMeters();
         this.priceMeter = this._extractPriceMeter();
-        
+
         this.additionalInfo = this._extractAdditionalInfo();
         this.hasLift = this._extractLift();
         this.isExterior = this._extractExterior();
+    }
+
+    get _data() {
+        return this._node.nextElementSibling;
+    }
+
+    refreshData() {
+        this.removeData();
+        this.addData();
+    }
+
+    isDataRendered() {
+        const nextElement = this._data; 
+        return nextElement.className
+            && nextElement.className.includes(ItemHTML.CONTAINER_CLASS_NAME);
+    }
+
+    removeData() {
+        if (!this.isDataRendered()) return;
+        this._data.remove();
+    }
+
+    addData() {
+        this._node.outerHTML += ItemHTML.createInformation(this);
+    }
+
+    isFlat() {
+        return this.name.includes('Piso');
+    }
+
+    isHouse() {
+        return this.name.includes('Casa');
+    }
+
+    isGround() {
+        return this.name.includes('Bajo');
     }
 
     _extractName() {
@@ -35,7 +73,7 @@ export default class Item {
         }
         return Number(metersText.replace('m²', ''));
     }
-    
+
     _extractPriceMeter() {
         return Math.round(this.price / this.meters);
     }
@@ -54,18 +92,6 @@ export default class Item {
     _extractExterior() {
         if (!this.additionalInfo) return false;
         return this.additionalInfo.includes('exterior');
-    }
-    
-    isFlat() {
-        return this.name.includes('Piso');
-    }
-
-    isHouse() {
-        return this.name.includes('Casa');
-    }
-
-    isGround() {
-        return this.name.includes('Bajo');
     }
 
 }

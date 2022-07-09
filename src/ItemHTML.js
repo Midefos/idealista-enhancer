@@ -23,16 +23,20 @@ export default class ItemHTML {
     
         const twentyPercent = Math.round(item.price * 20 / 100);
         const thirtyPercent = Math.round(item.price * 30 / 100);
+        const fiftyPercent = Math.round(item.price * 50 / 100);
         return `
-        <span>
-            <strong>20%:</strong> ${twentyPercent}€ <br>
-            <strong>30%:</strong> ${thirtyPercent}€
-        </span>`;
+        <div>
+            <span><strong>20%:</strong> ${twentyPercent}€</span>
+            <span><strong>30%:</strong> ${thirtyPercent}€</span>
+            <span><strong>50%:</strong> ${fiftyPercent}€</span>
+        </div>`;
     }
     
     
     static _createPriceHTML(item) {
         const desiredPrice = Preferences.get('max-price');
+        if (!desiredPrice) return ``;
+
         const desiredTwentyFivePercentMore = Math.round(desiredPrice * 1.25);
     
         if (item.price <= desiredPrice) {
@@ -46,6 +50,8 @@ export default class ItemHTML {
     
     static _createPriceMeterHTML(item) {
         const desiredPricePerMeter = Preferences.get('max-price-per-meter');
+        if (!desiredPricePerMeter) return `<span><strong>m²:</strong> ${item.priceMeter}€</span>`;
+
         const desiredTwentyFivePercentMore = Math.round(desiredPricePerMeter * 1.25);
     
         if (item.priceMeter <= desiredPricePerMeter) {
@@ -88,7 +94,6 @@ export default class ItemHTML {
         return this.__createIndividual('✓', infoText, 'success');
     }
 
-
     static _createWarning(infoText) {
         return this.__createIndividual('✓', infoText, 'warning');
     }
@@ -99,6 +104,10 @@ export default class ItemHTML {
 
     static _createError(infoText) {
         return this.__createIndividual('✓', infoText, 'error');
+    }
+
+    static _createNeutral(infoText) {
+        return this.__createIndividual('ⓘ', infoText)
     }
 
     static __createIndividual(strongText, infoText, className = '') {

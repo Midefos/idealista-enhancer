@@ -1,3 +1,4 @@
+import ButtonClass from "./ButtonClass.js";
 import ConfigurationHTML from "./ConfigurationHTML.js";
 
 export default class MenuHTML {
@@ -15,8 +16,8 @@ export default class MenuHTML {
     static create() {
         return `
         <div class='${this.CONTAINER_CLASS_NAME}'>
-            <button class='${ConfigurationHTML.OPEN_CONFIG_CLASS_NAME}' title='Abrir configuración'>⚙</button>
-            <button class='${this.RELOAD_INFORMATION_CLASS_NAME}' title='Cargar información'>⟳</button>
+            <button class='${ButtonClass.IDEALISTA_BUTTON_CLASS} ${ConfigurationHTML.OPEN_CONFIG_CLASS_NAME}' title='Abrir configuración'>⚙ Configuración</button>
+            <button class='${ButtonClass.IDEALISTA_BUTTON_CLASS} ${this.RELOAD_INFORMATION_CLASS_NAME}' title='Refrescar información'>⟳ Refrescar</button>
         </div>`;
     }
 

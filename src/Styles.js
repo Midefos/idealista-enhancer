@@ -11,8 +11,9 @@ export default class Styles {
             justify-content: space-around;
 
             width: 100%;
-            height: 55px;
-            margin-top: 5px;		
+            margin-top: -10px;
+            margin-bottom: 10px;
+            padding: 10px 0;	
 
             background-color: white;
             box-shadow: 0 3px 6px rgba(225, 245, 110, 0.16), 0 3px 6px rgba(225, 245, 110, 0.23);
@@ -24,7 +25,7 @@ export default class Styles {
             justify-content: space-around;
 
             width: 100%;
-            height: 40px;
+            padding: 10px 0;
 
             background-color: white;
             box-shadow: 0 3px 6px rgba(225, 245, 110, 0.16), 0 3px 6px rgba(225, 245, 110, 0.23);
@@ -34,13 +35,16 @@ export default class Styles {
             position: fixed;
             z-index: 3;
         
-            background-color: rgba(225, 245, 110, 0.90);  
             width: 95%;
             height: 95%;
             top: 2.5%;
             left: 2.5%;
             
             padding: 2rem;
+
+            background-color: rgba(255, 255, 255, 0.90);  
+            border: 5px solid rgb(225, 245, 110);
+            border-radius: 8px;
         }
 
         .success {

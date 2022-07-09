@@ -1,3 +1,4 @@
+import ButtonClass from "./ButtonClass.js";
 import Preferences from "./Preferences.js";
 
 export default class ConfigurationHTML {
@@ -65,10 +66,12 @@ export default class ConfigurationHTML {
                 <input type='number' id='max-price-per-meter' value='${Preferences.get('max-price-per-meter')}' placeholder='0'>
             </label>
             <br>
-            
-            <button class='${this.SAVE_CONFIG_CLASS_NAME}'>Guardar</button>
-            <button class='${this.OPEN_CONFIG_CLASS_NAME}'>Cerrar</button>
-        </div>`
+
+            <div>
+                <button class='${ButtonClass.IDEALISTA_BUTTON_CLASS} ${this.SAVE_CONFIG_CLASS_NAME}'>Guardar</button>
+                <button class='${ButtonClass.IDEALISTA_BUTTON_CLASS} ${this.OPEN_CONFIG_CLASS_NAME}'>Cerrar</button>
+            </div>
+            </div>`
     }
 
 }
